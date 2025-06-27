@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using System.Text;
+using ApiSecurtiy.Constants; 
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,7 +13,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddAuthorization(opts =>
 {
     // custom policy base on claims
-    opts.AddPolicy("MustHaveEmployeeId", policy =>
+    opts.AddPolicy(PolicyConstants.MustHaveEmployeeId, policy =>
     {
         policy.RequireClaim("employeeId");
     });
