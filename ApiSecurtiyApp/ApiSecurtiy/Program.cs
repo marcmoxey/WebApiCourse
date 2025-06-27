@@ -19,6 +19,17 @@ builder.Services.AddAuthorization(opts =>
     });
 
 
+    opts.AddPolicy(PolicyConstants.MustBeTheOwner, policy =>
+    {
+        // can add mulitply things in a policy 
+        // policy.RequireUserName("mmoxey");
+        policy.RequireClaim("title", "Business Owner");
+    });
+
+    opts.AddPolicy(PolicyConstants.MustBeVeteranEmployee, policy =>
+    {
+        policy.RequireClaim("employeeId", "E001", "E002", "E003");
+    });
 
     // if not other policy applied still need the user to be authenticated
     // lock down the app
