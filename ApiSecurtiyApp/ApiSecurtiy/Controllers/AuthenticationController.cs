@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -18,11 +19,12 @@ public class AuthenticationController : ControllerBase
         _config = config;
     }
     public record AuthenticationData(string? UserName, string? Password);
-    public record UserData(int UserId, string UserName);
+    public record UserData(int UserId, string UserName, string Title, string EmployeeId);
 
 
     // api/Authentication/token
     [HttpPost("token")]
+    [AllowAnonymous] // unlock piece that need ti be access anonymous
     public ActionResult<string> Authenticate([FromBody] AuthenticationData data)
     {
         // validate Credentials
@@ -53,6 +55,9 @@ public class AuthenticationController : ControllerBase
         List<Claim> claims = new();
         claims.Add(new(JwtRegisteredClaimNames.Sub, user.UserId.ToString()));
         claims.Add(new(JwtRegisteredClaimNames.UniqueName, user.UserName));
+        // add more claims
+        claims.Add(new("title", user.Title)); 
+        claims.Add(new("employeeId", user.EmployeeId));
 
 
         // build token
@@ -74,12 +79,12 @@ public class AuthenticationController : ControllerBase
         // THIS NOT PRODUCTION CODE = THIS IS ONLY A DEMO - DO NOT USE IN REAL LIFE
         if(CompareValues(data.UserName, "mmoxey") && CompareValues(data.Password, "Test123"))
         {
-            return new UserData(1, data.UserName!); 
+            return new UserData(1, data.UserName!, "Business Owner", "E001"); 
         }
 
         if (CompareValues(data.UserName, "tcorey") && CompareValues(data.Password, "Test123"))
         {
-            return new UserData(2, data.UserName!);
+            return new UserData(2, data.UserName!, "Head of Secuirty", "E005");
         }
 
         return null;

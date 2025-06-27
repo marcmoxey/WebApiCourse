@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,9 +9,28 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddAuthorization(opts =>
+{
+    // custom policy base on claims
+    opts.AddPolicy("MustHaveEmployeeId", policy =>
+    {
+        policy.RequireClaim("employeeId");
+    });
+
+
+
+    // if not other policy applied still need the user to be authenticated
+    // lock down the app
+    opts.FallbackPolicy = new AuthorizationPolicyBuilder()
+    .RequireAuthenticatedUser()
+    .Build();
+});
+
 builder.Services.AddAuthentication("Bearer")
+    // allow user to send the token back
     .AddJwtBearer(opts =>
     {
+       // validate token
         opts.TokenValidationParameters = new()
         {
             ValidateIssuer = true,

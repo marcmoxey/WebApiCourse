@@ -7,6 +7,7 @@ namespace ApiSecurtiy.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+
 public class UsersController : ControllerBase
 {
     private readonly IConfiguration _config; 
@@ -25,7 +26,7 @@ public class UsersController : ControllerBase
 
     // GET api/<UsersController>/5
     [HttpGet("{id}")]
-    [Authorize]
+    [Authorize(Policy = "MustHaveEmployeeId")]
     public string Get(int id)
     {
         return _config.GetConnectionString("Default");
