@@ -26,12 +26,12 @@ builder.Services.AddSwaggerGen(opts => {
     opts.SwaggerDoc("v1", new OpenApiInfo
      {
         Version = "v1",
-        Title = $"{title} v1",
+        Title = $"{title} v1 (deprecated)",
         Description = description,
         TermsOfService = terms,
         License = license,
         Contact = contact
-
+        
     });
 
     opts.SwaggerDoc("v2", new OpenApiInfo
