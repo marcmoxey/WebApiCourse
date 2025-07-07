@@ -1,13 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace MonitoringApi.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly ILogger<UserController> _logger;
+
+        public UserController(ILogger<UserController> logger)
+        {
+            _logger = logger;
+        }
+
+
         // GET: api/<UserController>
         [HttpGet]
         public IEnumerable<string> Get()
@@ -17,9 +27,32 @@ namespace MonitoringApi.Controllers
 
         // GET api/<UserController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public IActionResult Get(int id)
         {
-            return "value";
+            //if(id < 0 || id > 100)
+            //{
+            //    _logger.LogWarning("The give id of {Id} was invalid.", id);
+            //    return BadRequest("The index was out of range");
+            //}
+            //_logger.LogInformation(@"The api\Users\{id} was called", id);
+            //return Ok($"Value {id}");
+
+            try
+            {
+                if (id < 0 || id > 100)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(id));
+                }
+
+                _logger.LogInformation(@"The api\Users\{id} was called", id);
+                return Ok($"Value {id}");
+            }
+            catch (Exception ex)
+            {
+
+                _logger.LogError(ex,"The give id of {Id} was invalid.", id);
+                return BadRequest("The index was out of range");
+            }
         }
 
         // POST api/<UserController>
