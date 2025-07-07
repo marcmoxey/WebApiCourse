@@ -37,6 +37,7 @@ namespace MonitoringApi.Controllers
             //_logger.LogInformation(@"The api\Users\{id} was called", id);
             //return Ok($"Value {id}");
 
+            // if logging cant be done synchronous you doing logging wrong
             try
             {
                 if (id < 0 || id > 100)
