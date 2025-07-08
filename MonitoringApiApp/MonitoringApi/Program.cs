@@ -1,7 +1,7 @@
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using MonitoringApi.HealthChecks;
-
+using WatchDog;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddHealthChecks()
     .AddCheck<RandomHealthCheck>("Site Health Check")
     .AddCheck<RandomHealthCheck>("Database Health Check");
+builder.Services.AddWatchDogServices();
 
 builder.Services.AddHealthChecksUI(opts =>
 {
@@ -24,6 +25,7 @@ builder.Services.AddHealthChecksUI(opts =>
 }).AddInMemoryStorage();
 
 var app = builder.Build();
+app.UseWatchDogExceptionLogger();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -41,11 +43,13 @@ app.MapHealthChecks("/health", new HealthCheckOptions
 {
     ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
 });
+app.MapHealthChecksUI();
 
-app.MapHealthChecksUI(options =>
+app.UseWatchDog(opts =>
 {
-    options.UIPath = "/healthchecks-ui";
+    opts.WatchPageUsername = app.Configuration.GetValue<string>("WatchDog:UserName");
+    opts.WatchPagePassword = app.Configuration.GetValue<string>("WatchDog:Password");
+    opts.Blacklist = "health";
 });
-
 
 app.Run();
