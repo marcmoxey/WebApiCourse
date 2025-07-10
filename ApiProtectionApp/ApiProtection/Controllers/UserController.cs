@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using ApiProtection.Models;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -24,8 +25,15 @@ namespace ApiProtection.Controllers
 
         // POST api/<UserController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post([FromBody] UserModel user)
         {
+            if(ModelState.IsValid)
+            {
+                return Ok("The modle is valid");
+            } else
+            {
+                return BadRequest();
+            }
         }
 
         // PUT api/<UserController>/5
