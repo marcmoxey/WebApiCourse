@@ -17,6 +17,9 @@ builder.Services.AddAuthorization(opts =>
     .Build();
 });
 
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("Default"));
+
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(opts =>
     {
@@ -34,6 +37,7 @@ builder.Services.AddAuthentication("Bearer")
          };
     });
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -49,5 +53,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHealthChecks("/health").AllowAnonymous();
 
 app.Run();
