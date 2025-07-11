@@ -14,7 +14,7 @@ Id
 FirstName
 LastName 
 UserName
-Password 
+
 
 
 API Endpoint Design: 
