@@ -1,0 +1,27 @@
+Overall idea
+A ToDo API that cpture a list of ToDos person. It wil give your your list, give you indivdual todos, you can update a todo, insert a new one, or delete a todo. We probably want a seprate endpoint for marking a todo as complete 
+
+
+ToDo:
+Id
+Task - "Take put the garbage", "Write that term paper"
+AssignedTo - The Id of the User 
+IsCompleted - boolean 
+IsArchived - boolean
+
+User: 
+Id
+FirstName
+LastName 
+UserName
+Password 
+
+
+API Endpoint Design: 
+
+GET: /Todo - Get all Todos
+GET: /Todo/{id} - Get a specific todo
+POST: /Todo - Create a new todo
+PUT: /Todo/{id} - Update a todo's task information 
+DELETE: /Todo/{id} - Delete a todo 
+PUT: /Todo/{id}/Complete - Mark the todo as complete 
