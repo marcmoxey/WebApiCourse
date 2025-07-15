@@ -24,7 +24,8 @@ public class TodosController : ControllerBase
     {
         // lookup user id
         var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
-        return await _data.GetAllAssigned(int.Parse(userId));
+       var output =  await _data.GetAllAssigned(int.Parse(userId));
+        return Ok(output);
     }
 
     // GET api/Todos/5
