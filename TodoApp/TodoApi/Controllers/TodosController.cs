@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
+using TodoLibrary.DataAccess;
 using TodoLibrary.Models;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -9,12 +11,20 @@ namespace TodoApi.Controllers;
 [ApiController]
 public class TodosController : ControllerBase
 {
+    private readonly ITodoData _data;
+
+    public TodosController(ITodoData data)
+    {
+        _data = data;
+    }
+
     // GET: api/Todos
     [HttpGet]
-    public ActionResult<IEnumerable<TodoModel>> Get()
+    public async Task<ActionResult<List<TodoModel>>> Get()
     {
-        return BadRequest();
-        throw new NotImplementedException();
+        // lookup user id
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        return await _data.GetAllAssigned(int.Parse(userId));
     }
 
     // GET api/Todos/5
