@@ -30,9 +30,11 @@ public class TodosController : ControllerBase
 
     // GET api/Todos/5
     [HttpGet("{id}")]
-    public TodoModel Get(int id)
+    public async Task<ActionResult<TodoModel>> Get(int todoId)
     {
-        throw new NotImplementedException();
+        var userId = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value;
+        var output = await _data.GetOneAssigned(int.Parse(userId), todoId);
+        return Ok(output);
     }
 
     // POST api/Todos
