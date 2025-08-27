@@ -6,6 +6,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddAuthorization(opts =>
@@ -14,6 +15,9 @@ builder.Services.AddAuthorization(opts =>
     .RequireAuthenticatedUser()
     .Build();
 });
+
+builder.Services.AddHealthChecks()
+    .AddSqlServer(builder.Configuration.GetConnectionString("Default"));
 
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer(opts =>
@@ -42,4 +46,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 
+
+app.MapControllers();
+app.MapHealthChecks("/health").AllowAnonymous();
 app.Run();
