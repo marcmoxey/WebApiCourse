@@ -35,7 +35,7 @@ public class TodoData : ITodoData
         return results.FirstOrDefault();
     }
 
-    public async Task<TodoModel> Create(int assignedTo, int task) // if casing match would not need to do = 'Assigned = assignedTo' can be AssignedTo
+    public async Task<TodoModel> Create(int assignedTo, string task) // if casing match would not need to do = 'Assigned = assignedTo' can be AssignedTo
     {
         var results = await _sql.LoadData<TodoModel, dynamic>
             ("dbo.spTodos_Create",
@@ -50,7 +50,7 @@ public class TodoData : ITodoData
     {
         return _sql.SaveData<dynamic>
             ("dbo.spTodos_UpdateTask",
-            new { AssignedTo = assignedTo, TodoId = todoId, Task = task },
+            new { AssignedTo = assignedTo, TodoId = todoId, Task = task, },
             "Default");
     }
 

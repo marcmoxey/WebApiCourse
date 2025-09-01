@@ -32,15 +32,20 @@ public class SqlDataAccess : ISqlDataAccess
         return rows.ToList();
     }
 
-    public Task SaveData<T>(string storeProcedure,
-        T parameters,
-        string connectionStringName)
+    public async Task SaveData<T>(
+           string storedProcedure,
+           T parameters, string
+           connectionStringName)
     {
         string connectionString = _config.GetConnectionString(connectionStringName);
 
         using IDbConnection connection = new SqlConnection(connectionString);
 
-        return connection.ExecuteAsync(storeProcedure, parameters, commandType: CommandType.StoredProcedure);
+        // dont need to return anything 
+        await connection.ExecuteAsync(
+            storedProcedure,
+            parameters,
+            commandType: CommandType.StoredProcedure);
     }
 
 
