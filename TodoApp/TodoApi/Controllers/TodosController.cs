@@ -41,11 +41,10 @@ public class TodosController : ControllerBase
     }
 
     // GET api/Todos/5
-    [HttpGet("{id}")]
-    public  async Task<ActionResult<TodoModel>> Get(int todoId)
+    [HttpGet("{todoId}")]
+    public async Task<ActionResult<TodoModel>> Get(int todoId)
     {
-     
-        var output = _data.GetOneAssigned(GetUserId(), todoId);
+        var output = await _data.GetOneAssigned(GetUserId(), todoId);
 
         return Ok(output);
     }
@@ -78,7 +77,7 @@ public class TodosController : ControllerBase
     }
 
     // DELETE api/Todos/5
-    [HttpDelete("{id}")]
+    [HttpDelete("{todoId}")]
     public async Task<IActionResult> Delete(int todoId)
     {
         await _data.Delete(GetUserId(), todoId);
