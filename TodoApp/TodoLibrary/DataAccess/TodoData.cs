@@ -8,7 +8,7 @@ using TodoLibrary.Models;
 
 namespace TodoLibrary.DataAccess;
 
-public class TodoData
+public class TodoData : ITodoData
 {
     private readonly ISqlDataAccess _sql;
 
@@ -33,5 +33,40 @@ public class TodoData
             "Default");
 
         return results.FirstOrDefault();
+    }
+
+    public async Task<TodoModel> Create(int assignedTo, int task) // if casing match would not need to do = 'Assigned = assignedTo' can be AssignedTo
+    {
+        var results = await _sql.LoadData<TodoModel, dynamic>
+            ("dbo.spTodos_Create",
+            new { AssignedTo = assignedTo, Task = task },
+            "Default");
+
+        return results.FirstOrDefault();
+    }
+
+
+    public Task UpdateTask(int assignedTo, int todoId, string task)
+    {
+        return _sql.SaveData<dynamic>
+            ("dbo.spTodos_UpdateTask",
+            new { AssignedTo = assignedTo, TodoId = todoId, Task = task },
+            "Default");
+    }
+
+    public Task CompleteTodo(int assignedTo, int todoId)
+    {
+        return _sql.SaveData<dynamic>
+            ("dbo.spTodos_CompleteTodo",
+            new { AssignedTo = assignedTo, TodoId = todoId },
+            "Default");
+    }
+
+    public Task Delete(int assignedTo, int todoId)
+    {
+        return _sql.SaveData<dynamic>
+            ("dbo.spTodos_Delete",
+            new { AssignedTo = assignedTo, TodoId = todoId },
+            "Default");
     }
 }
