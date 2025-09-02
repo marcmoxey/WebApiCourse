@@ -1,12 +1,19 @@
 
+using BlazorApiClient.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddScoped<TokenModel>(); // singletion per user - new instance of the class if in new tab
+builder.Services.AddHttpClient("api", opts =>
+{
+    opts.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ApiUrl")); //https://localhost:7551/api 
+});
 
 
 var app = builder.Build();

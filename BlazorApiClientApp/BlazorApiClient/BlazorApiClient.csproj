@@ -4,6 +4,15 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>99285333-0d3c-4160-b892-e1bdd95c6813</UserSecretsId>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Content Include="Models\AuthenicationModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+  </ItemGroup>
 
 </Project>
