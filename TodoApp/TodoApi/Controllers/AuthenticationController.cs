@@ -76,7 +76,7 @@ public class AuthenticationController : ControllerBase
         if (CompareValues(data.Username, "tcorey") &&
          CompareValues(data.Password, "Test123"))
         {
-            return new UserData(1, "Tim", "Corey", data.Username!);
+            return new UserData(2, "Tim", "Corey", data.Username!);
         }
 
         return null;    
