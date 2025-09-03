@@ -12,7 +12,7 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddScoped<TokenModel>(); // singletion per user - new instance of the class if in new tab
 builder.Services.AddHttpClient("api", opts =>
 {
-    opts.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ApiUrl")); //https://localhost:7551/api 
+    opts.BaseAddress = new Uri(builder.Configuration.GetValue<string>("ApiUrl"));  
 });
 
 
