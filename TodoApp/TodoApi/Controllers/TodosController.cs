@@ -31,7 +31,7 @@ public class TodosController : ControllerBase
 
     // GET: api/Todos
     // ActionResult - return differnt types of values 
-    [HttpGet]
+    [HttpGet(Name = "GetAllTodos")]
     public async Task<ActionResult<List<TodoModel>>> Get()
     {
         _logger.LogInformation("GET: api/Todos"); // call was mad to this endpoint
@@ -53,7 +53,7 @@ public class TodosController : ControllerBase
     }
 
     // GET api/Todos/5
-    [HttpGet("{todoId}")]
+    [HttpGet("{todoId}", Name = "GetOneTodo")]
     public async Task<ActionResult<TodoModel>> Get(int todoId)
     {
         _logger.LogInformation("GET: api/Todos/{TodoId}", todoId);
@@ -72,7 +72,7 @@ public class TodosController : ControllerBase
     }
 
     // POST api/Todos
-    [HttpPost]
+    [HttpPost(Name = "CreateTodo")]
     public async Task<ActionResult<TodoModel>> Post([FromBody] string task)
     {
         _logger.LogInformation("Post: api/Todos (Task: {Task})", task);
@@ -90,7 +90,7 @@ public class TodosController : ControllerBase
     }
 
     // PUT api/Todos/5
-    [HttpPut("{todoId}")]
+    [HttpPut("{todoId}", Name = "UpdateTodoTask")]
     public async Task<IActionResult> Put(int todoId, [FromBody] string task)
     {
         _logger.LogInformation("PUT: api/Todos/{TodoId} (Task: {Task})",todoId, task);
@@ -108,7 +108,7 @@ public class TodosController : ControllerBase
     }
 
     // PUT api/Todos/5/Complete
-    [HttpPut("{todoId}/Complete")]
+    [HttpPut("{todoId}/Complete", Name = "CompeleteTodo")]
     public async Task<IActionResult> Complete(int todoId)
     {
         _logger.LogInformation("PUT: api/Todos/{TodoId}/Complete", todoId);
@@ -126,7 +126,7 @@ public class TodosController : ControllerBase
     }
 
     // DELETE api/Todos/5
-    [HttpDelete("{todoId}")]
+    [HttpDelete("{todoId}", Name = "DeleteTodo")]
     public async Task<IActionResult> Delete(int todoId)
     {
         _logger.LogInformation("DELETE: api/Todos/{TodoId}", todoId);
