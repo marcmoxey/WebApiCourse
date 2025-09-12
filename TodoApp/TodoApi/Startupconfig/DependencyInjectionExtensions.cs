@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 using TodoLibrary.DataAccess;
 
@@ -11,10 +12,47 @@ public static class DependencyInjectionExtensions
     {
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-
-       
+        builder.AddSwaggerServices();
     }
+
+    private static void AddSwaggerServices(this WebApplicationBuilder builder)
+    {
+        var secuirtyScheme = new OpenApiSecurityScheme()
+        {
+            Name = "Authorization", // mostly change 
+            Description = "JWT Authorization header info using bearer tokens", // mostly change 
+            In = ParameterLocation.Header,
+            Type = SecuritySchemeType.Http,
+            Scheme = "bearer",
+            BearerFormat = "JWT"
+        };
+
+
+
+        var securityRequirment = new OpenApiSecurityRequirement
+        {
+            {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference
+                    {
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "bearerAuth" // mostly change 
+                    },
+                },
+                new string[] {}
+            }
+        };
+
+
+
+        builder.Services.AddSwaggerGen(opts =>
+        {
+            opts.AddSecurityDefinition("bearerAuth", secuirtyScheme);
+            opts.AddSecurityRequirement(securityRequirment);
+        });
+    }
+
 
     public static void AddCustomServices(this WebApplicationBuilder builder)
     {

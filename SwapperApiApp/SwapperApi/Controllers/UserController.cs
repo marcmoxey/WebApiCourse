@@ -26,6 +26,7 @@ namespace SwapperApi.Controllers
         ///     }
         /// ]
         /// </remarks>
+        /// 
         /// <returns>A list of users.</returns>
         [HttpGet]
         public IEnumerable<string> Get()
